@@ -1,0 +1,187 @@
+---
+layout: default
+---
+
+<!-- 브레드크럼 -->
+<nav class="breadcrumb">
+  <a href="/">홈</a>
+  <span>›</span>
+  <a href="/region/{{ page.regionSlug }}/">{{ page.region }}</a>
+  <span>›</span>
+  <span>{{ page.templeName }}</span>
+</nav>
+
+<div class="market-layout">
+<div class="market-page">
+
+  <!-- 헤더 -->
+  <div class="market-header" style="padding:0;overflow:hidden;">
+    {% if page.image and page.image != "" %}
+    <img class="spot-hero-img" src="{{ page.image }}" alt="{{ page.templeName }}" loading="lazy">
+    {% endif %}
+    <div style="padding:24px;">
+    <div class="market-header-top">
+      <div class="market-badges">
+        <span class="badge badge-region">{{ page.region }} {{ page.city }}</span>
+        <span class="badge badge-city">🛕 사찰</span>
+      </div>
+      <h1 class="market-name">{{ page.templeName }}</h1>
+    </div>
+
+    <div class="market-info-grid">
+      <div class="info-item">
+        <span class="info-icon">📍</span>
+        <span>{{ page.address }}</span>
+      </div>
+      {% if page.lat and page.lat != "" %}
+      <div class="info-item">
+        <a href="https://map.kakao.com/link/map/{{ page.templeName | url_encode }},{{ page.lat }},{{ page.lng }}" target="_blank" rel="noopener" class="parking-btn">🗺️ 카카오맵으로 위치 보기</a>
+      </div>
+      {% endif %}
+      {% if page.phone and page.phone != "" %}
+      <div class="info-item">
+        <span class="info-icon">📞</span>
+        <span>{{ page.phone }}</span>
+      </div>
+      {% endif %}
+      {% if page.usetime and page.usetime != "" %}
+      <div class="info-item">
+        <span class="info-icon">🕒</span>
+        <span>{{ page.usetime }}</span>
+      </div>
+      {% endif %}
+      {% if page.restdate and page.restdate != "" %}
+      <div class="info-item">
+        <span class="info-icon">📅</span>
+        <span>휴무: {{ page.restdate }}</span>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if page.parking and page.parking != "" %}
+    <div class="market-facilities">
+      <span class="facility-badge yes">🅿️ 주차 {{ page.parking }}</span>
+    </div>
+    {% endif %}
+    </div>
+  </div>
+
+  <!-- 광고 -->
+  <div class="ad-slot">{% include ad.html %}</div>
+
+  <!-- 소개 -->
+  {% if page.overview and page.overview != "" %}
+  <div class="market-section">
+    <h2>🛕 유래·소개</h2>
+    <p class="market-description">{{ page.overview }}</p>
+  </div>
+  {% endif %}
+
+  {% if page.expguide and page.expguide != "" %}
+  <div class="market-tip">
+    <span class="tip-icon">💡</span>
+    <div>
+      <strong>방문 안내</strong>
+      <p>{{ page.expguide }}</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- 같은 지역 다른 사찰 -->
+  {% if page.same_region and page.same_region.size > 0 %}
+  <div class="market-section">
+    <h2>🗺️ {{ page.region }} 다른 사찰</h2>
+    <div class="related-grid">
+      {% for s in page.same_region %}
+      <a href="/temple/{{ s.slug }}/" class="related-card {% if s.image and s.image != '' %}has-img{% endif %}">
+        {% if s.image and s.image != "" %}
+        <img class="related-card-img" src="{{ s.image }}" alt="{{ s.name }}" loading="lazy">
+        <div class="related-card-body">
+        {% endif %}
+        <span class="related-icon">🛕</span>
+        <span class="related-name">{{ s.name }}</span>
+        <span class="related-days">{{ s.city }}</span>
+        {% if s.image and s.image != "" %}</div>{% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    <a href="/region/{{ page.regionSlug }}/" class="view-all-link">{{ page.region }} 전체 보기 →</a>
+  </div>
+  {% endif %}
+
+  <div class="ad-slot">{% include ad.html %}</div>
+
+  <!-- 최근 본 곳 -->
+  <div class="market-section" id="recentSection" style="display:none">
+    <h2>🕑 최근 본 곳</h2>
+    <div class="related-grid" id="recentGrid"></div>
+  </div>
+
+  <!-- 이전/다음 -->
+  {% if page.prev_temple and page.next_temple %}
+  <div class="market-prevnext">
+    <a href="/temple/{{ page.prev_temple.slug }}/" class="prevnext-btn prevnext-prev">
+      <span class="prevnext-label">◀ 이전</span>
+      <span class="prevnext-name">{{ page.prev_temple.name }}</span>
+    </a>
+    <a href="/temple/{{ page.next_temple.slug }}/" class="prevnext-btn prevnext-next">
+      <span class="prevnext-label">다음 ▶</span>
+      <span class="prevnext-name">{{ page.next_temple.name }}</span>
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": "{{ page.templeName | escape }}",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "{{ page.region | escape }}",
+      "addressLocality": "{{ page.city | escape }}",
+      "streetAddress": "{{ page.address | escape }}"
+    }{% if page.lat and page.lat != "" %},
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": {{ page.lat }},
+      "longitude": {{ page.lng }}
+    }{% endif %}{% if page.image and page.image != "" %},
+    "image": "{{ page.image }}"{% endif %},
+    "description": "{{ page.description | escape }}"
+  }
+  </script>
+
+</div>
+<aside class="market-sidebar">
+  {% include ad.html slot="6255378195" label="사이드바" %}
+</aside>
+</div>
+
+<script>
+// 최근 본 곳 (localStorage)
+(() => {
+  const KEY = 'wooatemple_recent';
+  const currentSlug = {{ page.slug | jsonify }};
+  const currentName = {{ page.templeName | jsonify }};
+  const currentImage = {{ page.image | jsonify }};
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) {}
+
+  const others = list.filter(i => i.slug !== currentSlug);
+  if (others.length > 0) {
+    document.getElementById('recentGrid').innerHTML = others.slice(0, 8).map(i => `
+      <a href="/temple/${i.slug}/" class="related-card ${i.image ? 'has-img' : ''}">
+        ${i.image ? `<img class="related-card-img" src="${i.image}" alt="${i.name}" loading="lazy"><div class="related-card-body">` : ''}
+        <span class="related-icon">🕑</span>
+        <span class="related-name">${i.name}</span>
+        ${i.image ? '</div>' : ''}
+      </a>`).join('');
+    document.getElementById('recentSection').style.display = 'block';
+  }
+
+  const updated = [{ slug: currentSlug, name: currentName, image: currentImage }, ...others].slice(0, 10);
+  try { localStorage.setItem(KEY, JSON.stringify(updated)); } catch (e) {}
+})();
+</script>

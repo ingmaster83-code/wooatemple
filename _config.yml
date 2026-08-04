@@ -1,0 +1,26 @@
+title: 우아사찰 - 전국 사찰 정보
+description: 전국 746곳 사찰의 위치, 유래, 이용시간, 주차 정보를 한눈에. 한국관광공사 공공데이터 기반 신뢰할 수 있는 사찰 정보.
+url: "https://wooatemple.wooahouse.com"
+baseurl: ""
+lang: ko
+timezone: Asia/Seoul
+author: WooaHouse
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - scripts/
+  - "*.py"
+  - README.md
+  - .gitignore
+  - vendor/
+  - _rawdata/
